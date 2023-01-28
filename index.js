@@ -15,9 +15,25 @@
         + It should return a string with `name` and `age`. Example: "Mary, 50"
 */
 
-function Person() {
-
+function Person(name, age) {
+    this.name = name;
+    this.age = age;
+    this.stomach = [];
 }
+Person.prototype.eat = function(food){
+  if(this.stomach.length != 10){ 
+    this.stomach.push(food);
+  }
+}
+Person.prototype.poop = function(){
+  this.stomach = [];
+}
+Person.prototype.toString = function(){
+  return `${this.name}, ${this.age}`;
+}
+
+
+
 
 
 /*
@@ -36,8 +52,24 @@ function Person() {
         + The `drive` method should return a string "I ran out of fuel at x miles!" x being `odometer`.
 */
 
-function Car() {
-
+function Car(first, second) {
+  this.model = first;
+  this.milesPerGallon = second;
+  this.tank = 0;
+  this.odometer = 0;
+}
+Car.prototype.fill = function(gallons){
+  this.tank += gallons;
+}
+Car.prototype.drive = function(distance){
+  if (distance <= this.milesPerGallon * this.tank){
+    this.odometer += distance;
+    this.tank -= distance / this.milesPerGallon;
+  }else {
+    this.odometer += this.milesPerGallon * this.tank;
+    this.tank = 0;
+    return console.log(`I ran out of fuel at ${this.odometer} miles`);
+  }
 }
 
 
@@ -49,18 +81,26 @@ function Car() {
         + Should return a string "Playing with x", x being the favorite toy.
 */
 
-function Baby() {
-
+function Baby(name, age, favetoy) {
+  Person.call(this, name, age);
+  this.favoriteToy = favetoy;
 }
+Baby.prototype = Object.create(Person.prototype);
+
+Baby.prototype.play = function(){
+  return `Playing with ${this.favoriteToy}`;
+}
+
+// console.log(Baby.play('trains'))
 
 
 /* 
   TASK 4
   In your own words explain the four principles for the "this" keyword below:
-  1. 
-  2. 
-  3. 
-  4. 
+  1. Window binding (error)- will return the window/global object in node or undefined in strict mode, when no other rules apply
+  2. Implicit binding (most common)- when invoked, the left of the dot will show what it refers to
+  3. Explicit binding- using .call, .apply, .bind to pass info into a new function 
+  4. New binding- points to newly created objects when a function is created as a constructor 
 */
 
 ///////// END OF CHALLENGE /////////
